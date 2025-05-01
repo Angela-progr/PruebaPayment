@@ -11,7 +11,8 @@ const App = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
   
-    const response = await fetch('http://localhost:8000/bff-b2c/v1/auth/login', {
+    // const response = await fetch('http://localhost:8000/bff-b2c/v1/auth/login', {
+      const response = await fetch('https://dev.agents4future.com/bff-b2c/v1/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -31,7 +32,7 @@ const App = () => {
     const product_id = e.target.product_id.value;
     const duration = parseInt(e.target.duration.value, 10);
 
-    const response = await fetch('http://localhost:8000/bff-b2c/v1/order', {
+    const response = await fetch('https://dev.agents4future.com/bff-b2c/v1/order', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

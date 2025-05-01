@@ -8,34 +8,34 @@ const Order = ({ order, token }) => {
   const [invoiceType, setInvoiceType] = useState(order.invoice_type);
   const [documentNumber, setDocumentNumber] = useState(order.document_number);
 
-  const saveOrder = async () => {
-    const updatedOrder = {
-      address,
-      invoice_type: invoiceType,
-      document_number: documentNumber
-    };
+  // const saveOrder = async () => {
+  //   const updatedOrder = {
+  //     address,
+  //     invoice_type: invoiceType,
+  //     document_number: documentNumber
+  //   };
 
-    try {
-      const response = await fetch(`http://localhost:8000/bff-b2c/v1/order/${order.id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
+  //   try {
+  //     const response = await fetch(`https://dev.agents4future.com/bff-b2c/v1/order/${order.id}`, {
+  //       method: 'PATCH',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Authorization': `Bearer ${token}`,
+  //       },
         
-        body: JSON.stringify(updatedOrder),
-      });
+  //       body: JSON.stringify(updatedOrder),
+  //     });
 
-      if (!response.ok) {
-        throw new Error(`Error al actualizar la orden: ${response.status}`);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
+  //     if (!response.ok) {
+  //       throw new Error(`Error al actualizar la orden: ${response.status}`);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //   }
+  // };
 
   const handlePay = async () => {
-    await saveOrder();
+    // await saveOrder();
     navigate(`/Checkout/${order.id}/${token}`);
   };
 

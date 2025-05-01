@@ -5,39 +5,41 @@ import CheckoutForm from './CheckoutForm';
 import { useParams } from 'react-router-dom';
 
 // Cargar tu clave pública de Stripe
-const stripePromise = loadStripe('pk_test_51RGSh5Rv2QRlIfiINO50JGowUdM6hgzDwB4XFyXfOwNkxQ9sGrNT02ly8LpLYZXf8jCZwrzHgbfaoRm20Cb7CLjf00rQ9ikTEV');
+const stripePromise = loadStripe('pk_test_51RJguqChvSbzAl3jLleQS7fTKz7YjE0C4KY59T1wlxdOakLdL1qoHhmLixGtzeYxrSJMHvRQt2FTgeh3cc2fJUZW00C0QYLW1D');
 
 const Checkout = () => {
-  const { order_id } = useParams();
-  const { token } = useParams();
-  const transaction_status="pendiente";
+  const { order_id, token } = useParams();
   const [clientSecret, setClientSecret] = useState(null);
+  const transaction_status = "pendiente";
 
   useEffect(() => {
     const fetchClientSecret = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/bff-b2c/v1/payment`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-          },
-          
-          body: JSON.stringify({order_id,transaction_status}),
-        });
-
-        if (!response.ok) {
-          throw new Error(`Error al obtener clientSecret: ${response.status}`);
+        // const response = await fetch(`http://localhost:8000/bff-b2c/v1/payment`, {
+          const response = await fetch(`https://dev.agents4future.com/bff-b2c/v1/payment`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({ order_id, transaction_status }),
+          });
+  
+          if (!response.ok) {
+            throw new Error(`Error al obtener clientSecret: ${response.status}`);
+          }
+  
+          const data = await response.json();
+          setClientSecret(data.client_secret);
+        } catch (error) {
+          console.error('Error:', error);
         }
-
-        const data = await response.json();
-        setClientSecret(data.client_secret);
-      } catch (error) {
-        console.error('Error:', error);
+      };
+  
+      if (order_id && token) {
+        fetchClientSecret();
       }
-    };
-    fetchClientSecret();
-  });
+    }, [order_id, token]);
 
   const appearance = {
     theme: 'stripe', // o 'flat', 'night', etc.
