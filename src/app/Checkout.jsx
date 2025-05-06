@@ -11,18 +11,20 @@ const Checkout = () => {
   const { order_id, token } = useParams();
   const [clientSecret, setClientSecret] = useState(null);
   const transaction_status = "pendiente";
+  const user_fullname = "TestAngela";
+  const user_email = "practicante2@agents4future.com";
 
   useEffect(() => {
     const fetchClientSecret = async () => {
       try {
-        // const response = await fetch(`http://localhost:8000/bff-b2c/v1/payment`, {
-          const response = await fetch(`https://dev.agents4future.com/bff-b2c/v1/payment`, {
+          const response = await fetch(`http://localhost:8000/bff-b2c/v1/payment`, {
+          //const response = await fetch(`https://dev.agents4future.com/bff-b2c/v1/payment`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`,
             },
-            body: JSON.stringify({ order_id, transaction_status }),
+            body: JSON.stringify({ order_id, transaction_status,user_fullname,user_email }),
           });
   
           if (!response.ok) {

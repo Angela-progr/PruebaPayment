@@ -4,15 +4,16 @@ import Order from './Order';
 const App = () => {
   const [token, setToken] = useState(null);
   const [orderData, setOrderData] = useState(null);
-
+  const invoice_type = "1";
+  const document_number = "10722809357";
 
   const handleLogin = async (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
   
-    // const response = await fetch('http://localhost:8000/bff-b2c/v1/auth/login', {
-      const response = await fetch('https://dev.agents4future.com/bff-b2c/v1/auth/login', {
+    const response = await fetch('http://localhost:8000/bff-b2c/v1/auth/login', {
+    //const response = await fetch('https://dev.agents4future.com/bff-b2c/v1/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -32,13 +33,14 @@ const App = () => {
     const product_id = e.target.product_id.value;
     const duration = parseInt(e.target.duration.value, 10);
 
-    const response = await fetch('https://dev.agents4future.com/bff-b2c/v1/order', {
+    const response = await fetch('http://localhost:8000/bff-b2c/v1/order', {
+    //const response = await fetch('https://dev.agents4future.com/bff-b2c/v1/order', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify({ detail: {
+      body: JSON.stringify({invoice_type,document_number, detail: {
         product_id,
         duration
       } }),
