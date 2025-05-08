@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Order = ({ order, token }) => {
   const navigate = useNavigate();
-  const invoice_type = "1";
-  const document_number = "123456789";
+  
   const [address, setAddress] = useState(order.address);
   const [invoiceType, setInvoiceType] = useState(order.invoice_type);
   const [documentNumber, setDocumentNumber] = useState(order.document_number);
