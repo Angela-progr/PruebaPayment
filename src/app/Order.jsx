@@ -1,14 +1,75 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import Checkout from './Checkout.jsx';
 
-const Order = ({ order, token }) => {
-  const navigate = useNavigate();
-  
+const Order = ({ customerId, order, token, client_secret }) => {
+
   const [address, setAddress] = useState(order.address);
   const [invoiceType, setInvoiceType] = useState(order.invoice_type);
   const [documentNumber, setDocumentNumber] = useState(order.document_number);
+  const [showCheckout, setShowCheckout] = useState(false); // Nuevo estado
 
-  // const saveOrder = async () => {
+  const handlePay = () => {
+    setShowCheckout(true); // Al hacer clic, mostramos el componente
+  };
+
+  return (
+    <div>
+      <h2>Detalles de la Orden</h2>
+      <p><strong>Product ID: </strong> {order.product_id}</p>
+      <p><strong>User ID: </strong> {order.user_id}</p>
+      <p><strong>Total Amount: </strong> {order.amount}</p>
+      <p><strong>Currency: </strong> {order.currency}</p>
+
+      <label>
+        <strong>Address: </strong>
+        <input
+          type="text"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+        />
+      </label>
+      <br />
+
+      <label>
+        <strong>Invoice type: </strong>
+        <input
+          type="text"
+          value={invoiceType}
+          onChange={(e) => setInvoiceType(e.target.value)}
+        />
+      </label>
+      <br />
+
+      <label>
+        <strong>Document Number: </strong>
+        <input
+          type="text"
+          value={documentNumber}
+          onChange={(e) => setDocumentNumber(e.target.value)}
+        />
+      </label>
+      <br />
+
+      <button onClick={handlePay}>Pagar</button>
+
+      {/* Mostrar Checkout si el usuario hizo clic en "Pagar" */}
+      {showCheckout && (
+        <Checkout
+          customerId={customerId}
+          order={order}
+          token={token}
+          client_secret={client_secret}
+        />
+      )}
+    </div>
+  );
+};
+
+export default Order;
+
+
+
+// const saveOrder = async () => {
   //   const updatedOrder = {
   //     address,
   //     invoice_type: invoiceType,
@@ -30,59 +91,3 @@ const Order = ({ order, token }) => {
   
   //   return response.json();
   // };
-  
-  const handlePay = async () => {
-    try {
-      //await saveOrder(); 
-      navigate(`/Checkout/${order.id}/${token}`);
-    } catch (error) {
-      console.error('Error al guardar la orden:', error);
-      // Aquí podrías mostrar un mensaje al usuario si lo deseas
-    }
-  };
-
-  return (
-    <div>
-      <h2>Detalles de la Orden</h2>
-      <p><strong>Product ID: </strong> {order.product_id}</p>
-      <p><strong>Duración: </strong> {order.months_duration}</p>
-      <p><strong>User ID: </strong> {order.user_id}</p>
-      <p><strong>Total Amount: </strong> {order.amount}</p>
-      <p><strong>Currency: </strong> {order.currency}</p>
-      
-      <label>
-        <strong>Address: </strong>
-        <input 
-          type="text" 
-          value={address} 
-          onChange={(e) => setAddress(e.target.value)} 
-        />
-      </label>
-      <br />
-
-      <label>
-        <strong>Invoice type: </strong>
-        <input 
-          type="text" 
-          value={invoiceType} 
-          onChange={(e) => setInvoiceType(e.target.value)} 
-        />
-      </label>
-      <br />
-
-      <label>
-        <strong>Document Number: </strong>
-        <input 
-          type="text" 
-          value={documentNumber} 
-          onChange={(e) => setDocumentNumber(e.target.value)} 
-        />
-      </label>
-      <br />
-
-      <button onClick={handlePay}>Pagar</button>
-    </div>
-  );
-};
-
-export default Order;
